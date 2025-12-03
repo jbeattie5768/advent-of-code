@@ -8,11 +8,13 @@ uv run mypy --strict ./src/aoc/2025/day_01/
 
 from .aoc_code import part1, part2  # type: ignore[import-not-found]  # mypy
 
-example_data = [""]  # Add example data here for development
+# I'm not sure this provided example data is the same for everyone?
+example_data = ["L68", "L30", "R48", "L5", "R60", "L55", "L1", "L99", "R14", "L82"]
+
 
 def test_part1() -> None:
-    assert part1(example_data) == 0
+    assert part1(example_data) == 3  # noqa: PLR2004 # acceptable for tests
+
 
 def test_part2() -> None:
-    assert part2(example_data) == 0
-
+    assert part2(example_data) == 6  # noqa: PLR2004 # acceptable for tests
