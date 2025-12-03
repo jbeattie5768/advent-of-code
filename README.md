@@ -148,5 +148,6 @@ There is a commented out line of code in the script to allow env use if it was n
 - Solutions: *<-- but don't cheat!*
   - [advent-of-code-wim](https://pypi.org/project/advent-of-code-wim/2025.1/)
   - [Algorithmist on YouTube](https://www.youtube.com/@Algorithmist)
+  - [hyper-neutrino om YouTube](https://www.youtube.com/@hyper-neutrino)
   - [salt-die (some with visuals)](https://github.com/salt-die/Advent-of-Code/tree/main/2025)
   - [awesome-advent-of-code](https://github.com/Bogdanp/awesome-advent-of-code?tab=readme-ov-file#python)
