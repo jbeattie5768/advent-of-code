@@ -9,6 +9,10 @@ options:
   -i, --init Days Year  create 'days' folders under 'year' folder, e.g. -i 12 2025
   -f, --fetch Day Year  get AoC input data for given 'day' and 'year', e.g. -f 1 2025
 
+Examples:
+uv run python ./setup_aoc.py -i 12 2025  # create folders for days 1-12 for year 2025
+uv run python ./setup_aoc.py -f 1 2025   # fetch input data for day 1 of year 2025
+
 """
 
 import argparse
