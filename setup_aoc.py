@@ -1,6 +1,20 @@
+"""Script to setup Advent of Code (AoC) folders and fetch input data.
+
+uv run python ./setup_aoc.py
+
+usage: setup_aoc.py [-h] [-i Days Year] [-f Day Year]
+
+options:
+  -h, --help            show this help message and exit
+  -i, --init Days Year  create 'days' folders under 'year' folder, e.g. -i 12 2025
+  -f, --fetch Day Year  get AoC input data for given 'day' and 'year', e.g. -f 1 2025
+
+"""
+
 import argparse
 import datetime
 import os
+import sys
 from pathlib import Path
 
 from aocd import get_data
@@ -19,23 +33,28 @@ with Path(".session.txt").open("r") as fid:
 
 
 def args_parser(arg_list: list[str] | None) -> argparse.Namespace:
+    """Parse command-line arguments."""
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
         "-i",
         "--init",
         nargs=2,
-        metavar=("Number of days", "Year"),
-        help="Create and initialise 'days' folders under 'year' folder",
+        metavar=("Days", "Year"),
+        help="create 'days' folders under 'year' folder, e.g. -i 12 2025",
     )
 
     parser.add_argument(
         "-f",
         "--fetch",
         nargs=2,
-        metavar=("Day Number", "Year"),
-        help="Get data from AOC for specified 'day' and 'year'",
+        metavar=("Day", "Year"),
+        help="get AoC input data for given 'day' and 'year', e.g. -f 1 2025",
     )
+
+    if arg_list is None or len(arg_list) == 1:  # no args
+        parser.print_help()  # default to stdout, can be redirected 'sys.stderr'
+        sys.exit(1)
 
     args: argparse.Namespace = parser.parse_args(arg_list)
 
@@ -43,6 +62,7 @@ def args_parser(arg_list: list[str] | None) -> argparse.Namespace:
 
 
 def check_days_year(days: int, year: int) -> tuple[int, int]:
+    """Simple checks for valid day(s) and year."""
     current_date = datetime.datetime.now(tz=datetime.UTC).date()
     current_year = current_date.year
 
@@ -61,14 +81,19 @@ def check_days_year(days: int, year: int) -> tuple[int, int]:
     return (days, year)
 
 
-def init(days: int, year: int) -> None:
+def create_aoc_folders(days: int, year: int) -> None:
+    """Create AoC folder structure for given year and number of days.
+
+    A boilerplate 'aoc_code.py' and 'test_aoc_code.py' file is created in each day folder.
+    Will not overwrite existing folders/files.
+    """
     days, year = check_days_year(days, year)
 
     folder_year = f"{year}"
     root_path = "./src/aoc"
     os.chdir(root_path)
 
-    # Initialize __init__.py in src/aoc if not present
+    # Initialize '__init__.py' in src/aoc if not present
     if not Path("__init__.py").exists():
         with Path("__init__.py").open("w") as fid:
             fid.write("")
@@ -105,7 +130,7 @@ example_data = [""]  # Add example data here for development
 
 def read_data() -> list[str]:
     file_dir = Path(__file__).parent
-    return Path(f"{{file_dir}}input.txt").open("r").read().splitlines()
+    return Path(f"{{file_dir}}/input.txt").open("r").read().splitlines()
 
 def part1(data: list[str]) -> int:
     return 0
@@ -155,25 +180,35 @@ def test_part2() -> None:
     os.chdir("..")  # root folder
 
 
-def fetch_data(token: str, fetch_day: int, fetch_year: int) -> None:
+def fetch_aoc_data(token: str, fetch_day: int, fetch_year: int) -> None:
+    """Fetch AoC input data for given day and year, write to 'input.txt' file.
+
+    File is written to the appropriate folder './src/aoc/YYYY/day_DD/input.txt'.
+    Will overwrite existing file without warning.
+    Uses the 'aocd' package to fetch the data.
+    """
     fetch_day, fetch_year = check_days_year(fetch_day, fetch_year)
 
     with Path(f"./src/aoc/{fetch_year}/day_{fetch_day:02}/input.txt").open("w", newline="\n") as fid:
-        fid.write(get_data(session=token, day=fetch_day, year=fetch_year) + "\n")
+        aoc_data = get_data(session=token, day=fetch_day, year=fetch_year)
+        fid.write(aoc_data + "\n")
 
     print(f"AoC input data file written to ./src/aoc/{fetch_year}/day_{fetch_day:02}/input.txt")
 
 
 def main(arg_list: list[str] | None = None) -> None:
+    """CLI entrypoint."""
     args = args_parser(arg_list)
     if args.init:
         days, year = args.init
-        init(int(days), int(year))
+        create_aoc_folders(int(days), int(year))
 
     if args.fetch:
         day, year = args.fetch
-        fetch_data(token, int(day), int(year))
+        fetch_aoc_data(token, int(day), int(year))
 
 
 if __name__ == "__main__":
     main()
+    # main(["-i", "1", "2024"])
+    # main(["-f", "1", "2024"])

@@ -8,7 +8,7 @@ uv run mypy --strict ./src/aoc/2025/day_01/
 
 from pathlib import Path
 
-# I'm not sure this provided example data is the same for everyone?
+# Example data for development: Part1=3, Part2=6
 example_data = ["L68", "L30", "R48", "L5", "R60", "L55", "L1", "L99", "R14", "L82"]
 
 
@@ -28,20 +28,19 @@ def part1(data: list[str]) -> int:
     curr_pos = 50
 
     for rotation in data:
-        lor: str = rotation[0].upper()
+        lor: str = rotation[0].upper()  # 'L' or 'R'
         value = int(rotation[1:])
 
-        lor_direct: int = -1 if lor == "L" else 1
+        direction: int = -1 if lor == "L" else 1
 
-        for _ in range(value):
-            curr_pos = curr_pos + lor_direct
-            curr_pos %= 100
+        for _ in range(value):  # count each click
+            curr_pos = curr_pos + direction
+            curr_pos %= 100  # wrap to 0 if curr_pos is 100
 
         if curr_pos == 0:
             count_zeroes += 1
 
-    print(f"Part 1: {count_zeroes}")  # Result is 962
-
+    print(f"Part 1: {count_zeroes}")
     return count_zeroes
 
 
@@ -62,7 +61,7 @@ def part2(data: list[str]) -> int:
             if curr_pos == 0:
                 count_zeroes += 1
 
-    print(f"Part 2: {count_zeroes}")  # Result is 5782
+    print(f"Part 2: {count_zeroes}")
 
     return count_zeroes
 
@@ -70,8 +69,8 @@ def part2(data: list[str]) -> int:
 if __name__ == "__main__":
     # res_part1 = part1(example_data)
     # res_part2 = part2(example_data)
-    res_part1 = part1(read_data())
-    res_part2 = part2(read_data())
+    res_part1 = part1(read_data())  # My result was 962
+    res_part2 = part2(read_data())  # My result was 5782
 
     # Not tried these....yet
     # data = get_data(1, 2025)  # aocd to get data

@@ -1,12 +1,13 @@
 [project]
 name = "aoc"
 version = "0.1.0"
-description = "Add your description here"
+description = "Advent of Code Challenge"
 readme = "README.md"
 authors = [
     { name = "jbeattie5768", email = "jbeattie5768@gmail.com" }
 ]
 requires-python = ">=3.14"
+
 dependencies = [
     "advent-of-code-data>=2.1.0",
 ]
