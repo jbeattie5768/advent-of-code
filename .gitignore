@@ -53,3 +53,12 @@ data/
 ################
 .session*
 .token*
+
+# Compressed Files
+##################
+# Github has its own compression methods
+*.zip
+*.tar.gz
+*.tar.bz2
+*.rar
+*.7z
