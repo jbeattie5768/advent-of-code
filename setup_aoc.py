@@ -213,6 +213,8 @@ def main(arg_list: list[str] | None = None) -> None:
 
 
 if __name__ == "__main__":
-    main()
+    print("Starting AoC setup...")
+    main(sys.argv[1:])
+
     # main(["-i", "1", "2024"])
-    # main(["-f", "1", "2024"])
+    # main(["-f", "5", "2025"])
